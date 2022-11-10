@@ -1,0 +1,85 @@
+create database insurance1;
+use insurance;
+create table person1(
+driver_id varchar(25) primary key,
+name char(30),
+address varchar(25)
+);
+desc person1;
+create table car1(
+reg_num varchar(20) primary key,
+model char(20),
+year int(4)
+);
+desc car1;
+create table owns1(
+driver_id varchar(20) ,
+reg_num varchar(20),
+foreign key(driver_id) references person1(driver_id) on delete cascade,
+foreign key(reg_num) references car1(reg_num) on delete cascade
+);
+alter table owns1
+add constraint primary key(driver_id,reg_num);
+desc owns1;
+create table accident1(
+report_num varchar(10) primary key,
+accident_date date,
+location varchar(50)
+);
+desc accident1;
+create table participated1(
+driver_id varchar(20),
+reg_num varchar(20),
+report_num varchar(10),
+damage_amount int(10),
+primary key(driver_id,reg_num,report_num),
+foreign key(report_num) references accident1(report_num) on delete cascade
+);
+desc participated1;
+alter table participated1
+add constraint foreign key(reg_num) references car1(reg_num);
+select * from person1;
+insert into person1 values('a1','shreesha','bengaluru');
+insert into person1 values('a2','nishanth','kaup');
+insert into person1 values('a3','prathik','udupi');
+insert into person1 values('a4','saikiran','manipal');
+insert into person1 values('a5','nidheesh','udupi');
+select * from car1;
+insert into car1 values('KA04','fortuner','2019');
+insert into car1 values('KA19','gloster','2020');
+insert into car1 values('KA20','endaveour','2019');
+insert into car1 values('KA05','superb','2017');
+insert into car1 values('KA51','tiguan','2021');
+select * from owns1;
+insert into owns1 values('a1','KA04');
+insert into owns1 values('a2','KA19');
+insert into owns1 values('a3','KA20');
+insert into owns1 values('a4','KA05');
+insert into owns1 values('a5','KA51');
+select * from accident1;
+insert into accident1 values('11','01-01-20','23000');
+insert into accident1 values('12','02-02-21','32000');
+insert into accident1 values('13','21-02-20','27000');
+insert into accident1 values('14','17-03-20','21000');
+insert into accident1 values('15','04-02-22','58000');
+select * from participated1;
+insert into participated1 values('a1','KA04','11','23000');
+insert into participated1 values('a2','KA19','12','32000');
+insert into participated1 values('a3','KA20','13','27000');
+insert into participated1 values('a4','KA05','14','21000');
+insert into participated1 values('a5','KA51','15','58000');
+update accident1
+set location='mysore road'
+where report_num='11';
+update accident1
+set location='south end circle'
+where report_num='12';
+update accident1
+set location='bull temple road'
+where report_num='13';
+update accident1
+set location='mysore road'
+where report_num='14';
+update accident1
+set location='kanakpura road'
+where report_num='15';
